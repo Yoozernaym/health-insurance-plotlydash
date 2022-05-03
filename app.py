@@ -8,6 +8,7 @@ import pandas as pd
 import sqlite3 as sql
 
 app = Dash(__name__)
+server = app.server
 
 con = sql.connect('censusdata.db')
 cur = con.cursor()
