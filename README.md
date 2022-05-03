@@ -1,0 +1,2 @@
+# healthinsurancePlotlyDash
+In this Project I use Python to retrieve health insurance data from the U.S. Census Bureau Small Area Health Insurance Estimates API at [Census.gov](https://www.census.gov/data/developers/data-sets/Health-Insurance-Statistics.html). I use SQLite to store and access the data and I use the [Plotly Dash](https://dash.plotly.com/) Python library for data visualization in various charts and a data table in a single page application.
