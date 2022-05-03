@@ -1,6 +1,5 @@
 #HAP 618 Project
 
-from turtle import width
 from dash import Dash, html, dcc, dash_table
 from dash.dependencies import Output, Input
 from dash.exceptions import PreventUpdate
