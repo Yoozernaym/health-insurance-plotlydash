@@ -1,5 +1,6 @@
 #HAP 618 Project
 
+from turtle import width
 from dash import Dash, html, dcc, dash_table
 from dash.dependencies import Output, Input
 from dash.exceptions import PreventUpdate
@@ -87,7 +88,7 @@ app.layout = html.Div([
         'Made by Willem Gardner with  ', 
         html.A(html.Img(id='logo', src='/assets/logo-plotly.svg', alt='Plotly'), href='https://dash.plotly.com/'), 
         'Dash using data from ',
-        html.A(html.Img(src='/assets/census-logo.svg'),id='censuslogo', href='https://www.census.gov/data/developers/data-sets/Health-Insurance-Statistics.html')
+        html.A(html.Img(src='/assets/census-logo.svg'),id='censuslogo',style={'width':64,'height':24}, href='https://www.census.gov/data/developers/data-sets/Health-Insurance-Statistics.html')
 
     ])
 ])
