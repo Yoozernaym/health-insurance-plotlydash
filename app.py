@@ -54,7 +54,7 @@ con.close()
 
 racecodes = {'0': 'All Races', '1': 'White', '2': 'Black', '3': 'Hispanic'}
 sexcodes = {'0': 'Both', '1': 'Male', '2': 'Female'}
-iprcodes = {'0': 'All Incomes', '1': 'At or Below 200% of Poverty', '2': 'At or Below 250% of Poverty', '3': 'At or Below 138% of Poverty', '4': 'At or Below 400% of Poverty', '5': 'Between 138% - 400% of Poverty'}
+iprcodes = {'0': 'All Incomes', '1': '<= 200% of Poverty', '2': '<= 250% of Poverty', '3': '<= 138% of Poverty', '4': '<= 400% of Poverty', '5': '138% - 400% of Poverty'}
 democodes = [['Race', racecodes], ['Sex', sexcodes], ['IPR', iprcodes]]
 
 app.layout = Div([
