@@ -1,6 +1,8 @@
 #HAP 618 Project
 
-from dash import Dash, html, dcc, dash_table
+from dash import Dash, dash_table
+from dash.html import H1,H2,H3,Div,P,Label,Button,Br,Main,Footer,A,Img 
+from dash.dcc import Location,Store,Dropdown,Tabs,Tab,Loading,Link,Graph
 from dash.dependencies import Output, Input
 from dash.exceptions import PreventUpdate
 import plotly.express as px
@@ -22,51 +24,51 @@ sexcodes = {'0': 'Both', '1': 'Male', '2': 'Female'}
 iprcodes = {'0': 'All Incomes', '1': 'At or Below 200% of Poverty', '2': 'At or Below 250% of Poverty', '3': 'At or Below 138% of Poverty', '4': 'At or Below 400% of Poverty', '5': 'Between 138% - 400% of Poverty'}
 democodes = [['Race', racecodes], ['Sex', sexcodes], ['IPR', iprcodes]]
 
-app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
-    dcc.Store(id='store',data='main page'),
-    dcc.Store(id='statestore'),
-    dcc.Store(id='countystore'),
-    dcc.Store(id='timestore'),
-    html.H1('Small Area Health Insurance Estimates from U.S. Census Bureau'),
-    html.Div([
-        html.Label([
-            html.P('Select Year: '), 
-            dcc.Dropdown(
+app.layout = Div([
+    Location(id='url', refresh=False),
+    Store(id='store',data='main page'),
+    Store(id='statestore'),
+    Store(id='countystore'),
+    Store(id='timestore'),
+    H1('Small Area Health Insurance Estimates from U.S. Census Bureau'),
+    Div([
+        Label([
+            P('Select Year: '), 
+            Dropdown(
             options=[i for i in range(2006, 2020)],
             id='yeardropdown'
             )
         ]),
-        html.Label([
-            html.P('Select State: '), 
-            dcc.Dropdown(
+        Label([
+            P('Select State: '), 
+            Dropdown(
             options=[{'label': statecodes.iloc[i,0],'value': statecodes.iloc[i,1]} for i in range(len(statecodes))],
             id='statedropdown'
             )
         ]),
-        html.Button(dcc.Link('Submit', href='', id='submit'))
+        Button(Link('Submit', href='', id='submit'))
     ], id='dropdowndiv'),
-    html.Br(),
-    html.Main([
-        dcc.Tabs([
-            dcc.Tab(label='County', value='countytab', id='countytab'),
-            dcc.Tab(label='Race and IPR', value='demotab', id='demotab'),
-            dcc.Tab(label='Over Time', value='timetab', id='timetab'),
+    Br(),
+    Main([
+        Tabs([
+            Tab(label='County', value='countytab', id='countytab'),
+            Tab(label='Race and IPR', value='demotab', id='demotab'),
+            Tab(label='Over Time', value='timetab', id='timetab'),
         ], id='statetabs', value='countytab'),
-        dcc.Loading(id='graph'),
-        html.Br(),
-        html.H3('State Data Table'),
-        html.Div([
-            html.Div([    
-                dcc.Dropdown(
+        Loading(id='graph'),
+        Br(),
+        H3('State Data Table'),
+        Div([
+            Div([    
+                Dropdown(
                     options=[{'label': racecodes[v], 'value': racecodes[v]} for v in racecodes],
                     id='racedropdown', placeholder='Race', multi=True
                 ),
-                dcc.Dropdown(
+                Dropdown(
                     options=[{'label': sexcodes[v], 'value': sexcodes[v]} for v in sexcodes],
                     id='sexdropdown', placeholder='Sex', multi=True
                 ),
-                dcc.Dropdown(
+                Dropdown(
                     options=[{'label': iprcodes[v], 'value': iprcodes[v]} for v in iprcodes],
                     id='iprdropdown', placeholder='IPR', multi=True
                 ),
@@ -82,12 +84,12 @@ app.layout = html.Div([
             )
         ],id='tablediv'),
     ]),
-    html.Br(),
-    html.Footer([
+    Br(),
+    Footer([
         'Made by Willem Gardner with  ', 
-        html.A(html.Img(id='logo', src='/assets/logo-plotly.svg', alt='Plotly'), href='https://dash.plotly.com/'), 
+        A(Img(id='logo', src='/assets/logo-plotly.svg', alt='Plotly'), href='https://dash.plotly.com/'), 
         'Dash using data from ',
-        html.A(html.Img(src='/assets/census-logo.svg'),id='censuslogo', href='https://www.census.gov/data/developers/data-sets/Health-Insurance-Statistics.html')
+        A(Img(src='/assets/census-logo.svg'),id='censuslogo', href='https://www.census.gov/data/developers/data-sets/Health-Insurance-Statistics.html')
 
     ])
 ])
@@ -253,16 +255,16 @@ def updatetable(race, sex, ipr,data,store):
 def showgraph(value,store,county,state,time):
     if store == 'main page':
         return [
-            html.H2('Select Year and State to see percentage of people without health insurance.'),
-            html.H2('Select tab to visualize data by County, Race and IPR, or Over time.'),
-            html.P('Data is retrieved from the Small Area Health Insurance Estimates U.S. Census Bureau API.'),
+            H2('Select Year and State to see percentage of people without health insurance.'),
+            H2('Select tab to visualize data by County, Race and IPR, or Over time.'),
+            P('Data is retrieved from the Small Area Health Insurance Estimates U.S. Census Bureau API.'),
         ]
     elif value == 'countytab':
         countydf = pd.DataFrame(county)
         countyfig = px.bar(countydf, x='County', y='Percent Uninsured', title=f'{store["statename"]} {store["year"]}')
         countyfig.update_yaxes(type='linear')
         countyfig.update_layout(xaxis={'categoryorder':'total descending'}, title={'x': 0.5})
-        return dcc.Graph(figure=countyfig)
+        return Graph(figure=countyfig)
 
     elif value == 'demotab':
         demodf = pd.DataFrame(state)
@@ -272,13 +274,13 @@ def showgraph(value,store,county,state,time):
         demofig.update_xaxes(type='category')
         demofig.update_yaxes(type='linear')
         demofig.update_layout(title={'x': 0.5})
-        return dcc.Graph(figure=demofig)
+        return Graph(figure=demofig)
     else:
         timedf = pd.DataFrame(time)
         timefig = px.line(timedf, x='Year', y='Percent Uninsured',
             title=f'{store["statename"]} 2006 - 2019')
         timefig.update_yaxes(type='linear')
         timefig.update_layout(title={'x': 0.5})
-        return dcc.Graph(figure=timefig)
+        return Graph(figure=timefig)
 if __name__ == '__main__':
     app.run_server()
