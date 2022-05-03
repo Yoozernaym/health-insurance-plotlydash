@@ -9,7 +9,40 @@ import plotly.express as px
 import pandas as pd
 import sqlite3 as sql
 
-app = Dash(__name__)
+app = Dash(__name__,meta_tags=[
+    {
+        'charset':'UTF-8'
+    },
+    {
+        'name':'description',
+        'content':'U.S. Census health insurance statistics visualization using Plotly Dash'
+    },
+    {
+        'name': 'viewport',
+        'content': 'width=device-width, initial-scale=1.0'
+    }],
+    index_string = '''
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                {%metas%}
+                <title>{%title%}</title>
+                {%favicon%}
+                {%css%}
+            </head>
+            <body>
+                {%app_entry%}
+                <footer>
+                    {%config%}
+                    {%scripts%}
+                    {%renderer%}
+                </footer>
+            </body>
+        </html>
+'''
+    )
+
+
 server = app.server
 
 con = sql.connect('censusdata.db')
@@ -89,7 +122,7 @@ app.layout = Div([
         'Made by Willem Gardner with  ', 
         A(Img(id='logo', src='/assets/logo-plotly.svg', alt='Plotly'), href='https://dash.plotly.com/'), 
         'Dash using data from ',
-        A(Img(src='/assets/census-logo.svg'),id='censuslogo', href='https://www.census.gov/data/developers/data-sets/Health-Insurance-Statistics.html')
+        A(Img(src='/assets/census-logo.svg', alt='U.S. Census Bureau Logo'),id='censuslogo', href='https://www.census.gov/data/developers/data-sets/Health-Insurance-Statistics.html')
 
     ])
 ])
