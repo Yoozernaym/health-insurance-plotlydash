@@ -28,7 +28,7 @@ app.layout = html.Div([
     dcc.Store(id='statestore'),
     dcc.Store(id='countystore'),
     dcc.Store(id='timestore'),
-    html.H1('Small Area Health Insurance Estimates (SAHIE) from U.S. Census Bureau'),
+    html.H1('Small Area Health Insurance Estimates from U.S. Census Bureau'),
     html.Div([
         html.Label([
             html.P('Select Year: '), 
@@ -189,56 +189,56 @@ def updatetable(race, sex, ipr,data,store):
         df = pd.DataFrame(data)
         updatedf = df.copy(deep=True)
   
-        rsel, rselec, ssel, sselec, isel, iselec = None, None, None, None, None, None
+        rselected, rselection, sselected, sselection, iselected, iselection = None, None, None, None, None, None
     
         if race is not None:
-            rsel = [(df['Race'] == race[i]) for i in range(0,len(race))]
-            if len(rsel) == 1:
-                rselec = rsel[0]
-            elif len(rsel) == 2:
-                rselec = (rsel[0] | rsel[1])
-            elif len(rsel) == 3:
-                rselec = (rsel[0] | rsel[1] | rsel[2])
+            rselected = [(df['Race'] == race[i]) for i in range(0,len(race))]
+            if len(rselected) == 1:
+                rselection = rselected[0]
+            elif len(rselected) == 2:
+                rselection = (rselected[0] | rselected[1])
+            elif len(rselected) == 3:
+                rselection = (rselected[0] | rselected[1] | rselected[2])
             else:
-                rselec = (rsel[0] | rsel[1] | rsel[2] | rsel[3])
+                rselection = (rselected[0] | rselected[1] | rselected[2] | rselected[3])
 
         if sex is not None:
-            ssel = [(df['Sex'] == sex[i]) for i in range(0,len(sex))]
-            if len(ssel) == 1:
-                sselec = ssel[0]
-            elif len(ssel) == 2:
-                sselec = (ssel[0] | ssel[1])
+            sselected = [(df['Sex'] == sex[i]) for i in range(0,len(sex))]
+            if len(sselected) == 1:
+                sselection = sselected[0]
+            elif len(sselected) == 2:
+                sselection = (sselected[0] | sselected[1])
             else:
-                sselec = (ssel[0] | ssel[1] | ssel[2])
+                sselection = (sselected[0] | sselected[1] | sselected[2])
         
         if ipr is not None:
-            isel = [(df['IPR'] == ipr[i]) for i in range(0,len(ipr))]
-            if len(isel) == 1:
-                iselec = isel[0]
-            elif len(isel) == 2:
-                iselec = (isel[0] | isel[1])
-            elif len(isel) == 3:
-                iselec = (isel[0] | isel[1] | isel[2])
-            elif len(isel) == 4:
-                iselec = (isel[0] | isel[1] | isel[2] | isel[3])
-            elif len(isel) == 5:
-                iselec = (isel[0] | isel[1] | isel[2] | isel[3] | isel[4])
+            iselected = [(df['IPR'] == ipr[i]) for i in range(0,len(ipr))]
+            if len(iselected) == 1:
+                iselection = iselected[0]
+            elif len(iselected) == 2:
+                iselection = (iselected[0] | iselected[1])
+            elif len(iselected) == 3:
+                iselection = (iselected[0] | iselected[1] | iselected[2])
+            elif len(iselected) == 4:
+                iselection = (iselected[0] | iselected[1] | iselected[2] | iselected[3])
+            elif len(iselected) == 5:
+                iselection = (iselected[0] | iselected[1] | iselected[2] | iselected[3] | iselected[4])
             else:
-                iselec = (isel[0] | isel[1] | isel[2] | isel[3] | isel[4] | isel[5])
+                iselection = (iselected[0] | iselected[1] | iselected[2] | iselected[3] | iselected[4] | iselected[5])
         if race is not None and sex is not None and ipr is not None:
-            updatedf = df.loc[rselec & sselec & iselec]
+            updatedf = df.loc[rselection & sselection & iselection]
         elif race is not None and sex is not None and ipr is None:
-            updatedf = df.loc[rselec & sselec]
+            updatedf = df.loc[rselection & sselection]
         elif race is not None and sex is None and ipr is not None:
-            updatedf = df.loc[rselec & iselec]
+            updatedf = df.loc[rselection & iselection]
         elif race is not None and sex is None and ipr is None:
-            updatedf = df.loc[rselec]
+            updatedf = df.loc[rselection]
         elif race is None and sex is not None and ipr is not None:
-            updatedf = df.loc[sselec & iselec]
+            updatedf = df.loc[sselection & iselection]
         elif race is None and sex is not None and ipr is None:
-            updatedf = df.loc[sselec]
+            updatedf = df.loc[sselection]
         else:
-            updatedf = df.loc[iselec]
+            updatedf = df.loc[iselection]
 
         return updatedf.to_dict('records')
 
@@ -255,7 +255,7 @@ def showgraph(value,store,county,state,time):
         return [
             html.H2('Select Year and State to see percentage of people without health insurance.'),
             html.H2('Select tab to visualize data by County, Race and IPR, or Over time.'),
-            html.P('Data is retrieved from Small Area Health Insurance Estimates (SAHIE) U.S. Census Bureau API.'),
+            html.P('Data is retrieved from the Small Area Health Insurance Estimates U.S. Census Bureau API.'),
         ]
     elif value == 'countytab':
         countydf = pd.DataFrame(county)
@@ -281,4 +281,4 @@ def showgraph(value,store,county,state,time):
         timefig.update_layout(title={'x': 0.5})
         return dcc.Graph(figure=timefig)
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server()
