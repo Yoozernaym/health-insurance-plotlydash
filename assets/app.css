@@ -75,7 +75,7 @@ label > #statedropdown {
     background-color: #112e51;
     display: flex;
     width: 4rem;
-    height: auto;
+    height: 1.25rem;
     padding: .1rem;
     border-radius: 5px;
 }
